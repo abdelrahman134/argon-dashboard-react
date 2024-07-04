@@ -51,15 +51,18 @@ import {
   Row,
   Col,
 } from "reactstrap";
-
+import { useSelector } from "react-redux";
+import logoCompany from "../../assets/img/brand/Asset.png"
 var ps;
 
 const Sidebar = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
+    const { direction ,mode} = useSelector((state) => state.theme);
+
   // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName) => {
-    return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
-  };
+  // const activeRoute = (routeName) => {
+  //   return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
+  // };
   // toggles collapse between opened and closed (true/false)
   const toggleCollapse = () => {
     setCollapseOpen((data) => !data);
@@ -102,7 +105,10 @@ const Sidebar = (props) => {
 
   return (
     <Navbar
-      className="navbar-vertical fixed-left navbar-light bg-white"
+      data-bs-theme="dark"
+      className={`navbar-vertical fixed-${
+        direction == "rtl" ? "right" : "left"
+      } navbar-${mode} bg-${mode=="light"?"white":mode}`}
       expand="md"
       id="sidenav-main"
     >
@@ -121,7 +127,7 @@ const Sidebar = (props) => {
             <img
               alt={logo.imgAlt}
               className="navbar-brand-img"
-              src={logo.imgSrc}
+              src={require("../../assets/img/brand/Asset.png")}
             />
           </NavbarBrand>
         ) : null}
@@ -230,11 +236,11 @@ const Sidebar = (props) => {
           {/* Navigation */}
           <Nav navbar>{createLinks(routes)}</Nav>
           {/* Divider */}
-          <hr className="my-3" />
+          {/* <hr className="my-3" /> */}
           {/* Heading */}
-          <h6 className="navbar-heading text-muted">Documentation</h6>
+          {/* <h6 className="navbar-heading text-muted">Documentation</h6> */}
           {/* Navigation */}
-          <Nav className="mb-md-3" navbar>
+          {/* <Nav className="mb-md-3" navbar>
             <NavItem>
               <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
                 <i className="ni ni-spaceship" />
@@ -261,7 +267,7 @@ const Sidebar = (props) => {
                 Upgrade to PRO
               </NavLink>
             </NavItem>
-          </Nav>
+          </Nav> */}
         </Collapse>
       </Container>
     </Navbar>

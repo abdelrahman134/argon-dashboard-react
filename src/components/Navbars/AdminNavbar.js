@@ -15,6 +15,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
+import { IconButton, Button } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -32,21 +35,46 @@ import {
   Nav,
   Container,
   Media,
+
 } from "reactstrap";
+import { toggleDirection, toggleMode } from "../../redux/slices/mode.slice";
+import { useTranslation } from "react-i18next";
 
 const AdminNavbar = (props) => {
+   const { direction,mode } = useSelector((state) => state.theme);
+   const { t, i18n } = useTranslation();
+   const handleClick = () => {
+    if (direction === 'ltr') {
+      i18n.changeLanguage('ar');
+      dispatch(toggleDirection('rtl'));
+    } else {
+      i18n.changeLanguage('en');
+      dispatch(toggleDirection('ltr'));
+    }
+  };
+  const dispatch = useDispatch();
   return (
     <>
-      <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
+      <Navbar
+        className={`navbar-top navbar-${mode == "light" ? "dark" : "light"}`}
+        expand="md"
+        id="navbar-main"
+      >
         <Container fluid>
           <Link
-            className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
+            className={`h4 mb-0 text-${
+              mode == "light" ? "white" : "dark"
+            } text-uppercase d-none d-lg-inline-block`}
             to="/"
           >
             {props.brandText}
           </Link>
-          <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-            <FormGroup className="mb-0">
+          <Form
+            className={`navbar-search navbar-search-${
+              mode == "light" ?  "black":"white"
+            } form-inline mr-3 d-none d-md-flex ml-lg-auto `}
+          >
+            <FormGroup className={`mb-0`}>
               <InputGroup className="input-group-alternative">
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
@@ -57,6 +85,17 @@ const AdminNavbar = (props) => {
               </InputGroup>
             </FormGroup>
           </Form>
+          <IconButton
+            onClick={() =>
+              dispatch(toggleMode(mode === "dark" ? "light" : "dark"))
+            }
+          >
+            {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
+          </IconButton>
+
+          <Button onClick={handleClick}>
+            {direction === "ltr" ? "Arabic" : "English"}
+          </Button>
           <Nav className="align-items-center d-none d-md-flex" navbar>
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>

@@ -25,8 +25,11 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
+import { useSelector } from "react-redux";
 
 const Admin = (props) => {
+   const { mode,direction } = useSelector((state) => state.theme);
+
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -49,6 +52,7 @@ const Admin = (props) => {
   };
 
   const getBrandText = (path) => {
+    
     for (let i = 0; i < routes.length; i++) {
       if (
         props?.location?.pathname.indexOf(routes[i].layout + routes[i].path) !==
@@ -61,7 +65,7 @@ const Admin = (props) => {
   };
 
   return (
-    <>
+    <div dir={direction} className={`bg-${mode == "light" ? "white" : mode}`}>
       <Sidebar
         {...props}
         routes={routes}
@@ -84,7 +88,7 @@ const Admin = (props) => {
           <AdminFooter />
         </Container>
       </div>
-    </>
+    </div>
   );
 };
 
